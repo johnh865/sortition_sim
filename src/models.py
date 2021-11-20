@@ -291,6 +291,7 @@ class Election:
         
         return np.append(self.leaders_to_keep, rand_leaders)
 
+
 @dataclass
 class SessionSettings:    
     
@@ -366,7 +367,8 @@ class Session:
     @cached_property
     def moneys2(self):
         """ndarray[float] shape(m,) : Money balance for each member at end of session."""
-        money = self.moneys1
+        money = self.moneys1.copy()
+        
         leader_reward = self.settings.leader_reward
         member_reward = self.settings.member_reward
         member_ids = self.member_ids_not_leaders
@@ -387,7 +389,6 @@ class Session:
             money[punish_ids] -= punishment
             
         return money
-            
             
 
     @cached_property
@@ -411,8 +412,6 @@ class Session:
     def will_punish(self):
         """bool : Determine if Session will vote to punish last leaders."""
         return self.votes_to_punish.sum() / len(self.leaders) > 0.5
-    
-    
     
     
     @cached_property
