@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pdb
-from src.models import Member, Members, Election, Session, SessionSettings
+from src import base
+from src.base import Member, Members, Election, Session, SessionSettings
 import pandas as pd
 import numpy as np
 
@@ -76,12 +77,13 @@ def test_simulation1():
         start_money=0, 
         member_reward=1, 
         leader_reward=2, 
-        punishment=30)
+        punishment=30,
+        max_steal=10000,)
     
     session = Session(election=election, settings=settings)
     session.moneys2
     
-    assert session._amount_to_steal == 99
+    assert session._amount_to_steal[0] == 99
     assert session.will_steal == True
     assert session.will_punish == False
     assert session.moneys2[session.leaders] == 101
@@ -141,6 +143,11 @@ def test_simulation2():
     
     
 if __name__ == '__main__':    
+    import logging
+    logging.basicConfig(level = logging.DEBUG)
+    # logger = logging.getLogger()
+    
+    
     test_simulation2()
     test_remove_probabilities()
     test_election()

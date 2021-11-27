@@ -7,7 +7,7 @@ Simple simulation testing 4 possible personality types.
 import pdb, traceback, sys, code
 import logging
 
-from src import models
+from src import base
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -15,7 +15,7 @@ bias = 2.0
 m_detect = 0.1
 l_detect = 0.9
 
-member1  = models.Member(
+member1  = base.Member(
     is_corrupt = True, 
     will_punish = True, 
     corrupt_detect_bias = bias,
@@ -23,7 +23,7 @@ member1  = models.Member(
     corrupt_detect_as_leader = l_detect, 
     )
 
-member2  = models.Member(
+member2  = base.Member(
     is_corrupt = True, 
     will_punish = False, 
     corrupt_detect_bias = bias,
@@ -31,7 +31,7 @@ member2  = models.Member(
     corrupt_detect_as_leader = l_detect, 
     )
 
-member3  = models.Member(
+member3  = base.Member(
     is_corrupt = False, 
     will_punish = True, 
     corrupt_detect_bias = bias,
@@ -39,7 +39,7 @@ member3  = models.Member(
     corrupt_detect_as_leader = l_detect, 
     )
 
-member4  = models.Member(
+member4  = base.Member(
     is_corrupt = False, 
     will_punish = False, 
     corrupt_detect_bias = bias,
@@ -53,19 +53,19 @@ def generate_members(n1, n2, n3, n4):
     m2 = member2.uniform(n2)
     m3 = member3.uniform(n3)
     m4 = member4.uniform(n4)
-    return models.Members.concat([m1, m2, m3, m4])
+    return base.Members.concat([m1, m2, m3, m4])
 
 
 members = generate_members(25, 25, 25, 25)
-election = models.Election(members, 11,)
-settings = models.SessionSettings()
+election = base.Election(members, 11,)
+settings = base.SessionSettings()
 
-sessions = models.Sessions(
+sessions = base.Sessions(
     members = members, 
     election = election, 
     settings = settings,
     num = 1000).run()
 
-h = sessions.vote_history()
-a = sessions.action_history()
+h = sessions.history.votes
+a = sessions.history.actions
 terms  = sessions.terms
