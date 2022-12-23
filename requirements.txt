@@ -1,5 +1,8 @@
 numpy
 #numba
-#scipy
+scipy
 pandas
 #spyder
+
+#pandera
+matplotlib
