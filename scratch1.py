@@ -1,26 +1,23 @@
-# -*- coding: utf-8 -*-
+import polars as pl
+import numpy as np 
 
-import pandas as pd
-import pandera as pa
-from pandera.typing import Series
-from typing import Protocol
+d = {}
+x = np.linspace(0, 1, 11)
+y = x**2
+z = np.sin(x)
+d['i'] = np.arange(len(x))
+d['x'] = x
+d['y'] = y
+d['z'] = z
+df = pl.DataFrame(d)
+
+filter1 = pl.col('i').is_between(4, 6)
+
+
+df2 = df.filter(filter1)
 
 
 
-class Type1(Protocol):
-    def meth(self) -> int:
-        ...
-        
-    @property
-    def x(self) -> int:
-        ...
+df.get_column('i')
 
-class Type2(Protocol):
-    x : int
-    y : int
-
-def mow(a : Type2):
-    a.x
-    a.y    
-        
-        
+df3 = df.with_columns([(pl.col('x') + 42)])
